@@ -13,6 +13,7 @@ typedef struct {
 void mainMenu();
 void miningMenu();
 void fishingMenu();
+void woodMenu();
 void activity(Resource *resource);
 
 
@@ -21,6 +22,9 @@ Resource coal = {"Coal", 0};
 Resource cod = {"Ikan Kod", 0};
 Resource cakalang = {"Ikan Cakalang", 0};
 Resource tuna = {"Ikan Tuna", 0};
+Resource cemara = {"Kayu Cemara", 0};
+Resource jati = {"Kayu Jati", 0};
+Resource oak = {"Kayu Oak", 0};
 
 // Main function
 int main() {
@@ -35,7 +39,8 @@ int main() {
         switch (choice) {
             case 1: miningMenu(); break;
             case 2: fishingMenu(); break;
-            case 3: run = 0; break; // Exit
+            case 3: woodMenu(); break;
+            case 4: run = 0; break; // Exit
             default:
                 printf("Invalid choice. Please try again.\n");
                 Sleep(2000);
@@ -53,7 +58,8 @@ void mainMenu() {
     puts("========== Text-Based RPG ==========");
     puts("[1] Mining");
     puts("[2] Fishing");
-    puts("[3] Exit");
+    puts("[3] Wood Cutting");
+    puts("[4] Exit");
     puts("====================================");
 }
 
@@ -103,6 +109,29 @@ void fishingMenu() {
     }
 }
 
+void woodMenu(){
+	int choice;
+	
+ 	system("cls");
+    puts("Choose a woodcutting option:");
+    puts("[1] Kayu Oak");
+    puts("[2] Kayu Cemara");
+    puts("[3] Kayu Jati");
+    puts("[4] Exit");   
+    printf(">> ");
+	scanf("%d", &choice); getchar();
+	
+	switch(choice){
+		case 1: activity(&oak); break;
+		case 2: activity(&cemara); break;
+		case 3: activity(&jati); break;
+		case 4: return;
+	    default:
+            printf("Invalid choice. Returning to the main menu...\n");
+            Sleep(2000);
+	}
+}
+
 // General activity function
 void activity(Resource *resource) {
     system("cls");
@@ -125,7 +154,7 @@ void activity(Resource *resource) {
         }
     }
     
-    printf("Mining stopped. Final count:\n");
+    printf("Activity stopped. Final count:\n");
     printf("%s: %d\n", resource->name, resource->count);
     printf("Press Enter to return to the menu...\n");
     getchar();
