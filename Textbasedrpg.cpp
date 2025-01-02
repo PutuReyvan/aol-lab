@@ -9,12 +9,26 @@ typedef struct {
     int count;
 } Resource;
 
+typedef struct{
+	int hp;
+	int xp;
+	int def;
+	int atk;
+}Stats;
+
 // Function prototypes
+
+/*function buat bagian login -rey*/
+void loginMenu();
+void registerUser();
+int loginUser();
+
 void mainMenu();
 void miningMenu();
 void fishingMenu();
 void woodMenu();
 void activity(Resource *resource);
+
 
 
 Resource copper = {"Copper", 0};
@@ -28,11 +42,37 @@ Resource oak = {"Kayu Oak", 0};
 
 // Main function
 int main() {
-    int choice;
+    int choice, login;
     int run = 1;
+    int isAuth = 0;
+
+	while(!isAuth){
+		loginMenu();
+    	printf("Enter your choice: ");
+    	scanf("%d", &login);
+    	
+    	switch(login){
+    		case 1:
+    			if(loginUser()){
+    				isAuth = 1;
+				}else{
+					printf("Username or password doesnt match... Try again\n");
+					Sleep(2000);
+				}
+    			break;
+    		case 2:
+    			registerUser();
+    			break;
+    		default:
+    			printf("Invalid choice");
+    			Sleep(2000);
+    			system("cls");
+		}
+	}
+
 
     while (run) {
-        mainMenu();
+	    mainMenu();
         printf("Enter your choice: ");
         scanf("%d", &choice); getchar();
 
@@ -61,6 +101,68 @@ void mainMenu() {
     puts("[3] Wood Cutting");
     puts("[4] Exit");
     puts("====================================");
+}
+
+void loginMenu(){
+	system("cls");
+	puts("===============Text-based RPG=============");
+	puts("[1]. Login");	
+	puts("[2]. Register");
+	puts("==========================================");	
+}
+
+void registerUser(){
+	char usn[50], password[50];
+	
+	FILE *file = fopen("data.csv", "a");
+	if(file == NULL){
+		printf("Error unable to open file\n");
+		Sleep(2000);
+		return;
+	}
+	
+	printf("Enter your username (Without space) : ");
+	scanf("%s", &usn); getchar();
+	
+	printf("Enter your password : ");
+	scanf("%s", &password); getchar();
+	
+	fprintf(file, "%s,%s\n", usn, password);
+	fclose(file);
+	
+	printf("Successfull. You can login now\n");
+	printf("Press enter to continue...\n");getchar();
+	
+}
+
+int loginUser(){
+	char usn[50], password[50];
+	char fileUsn[50], filePassword[50];
+	
+	FILE *file = fopen("data.csv", "r");
+	if(file == NULL){
+		printf("Error unable to open file\n");
+		Sleep(2000);
+		return 0;
+	}
+	
+	printf("Enter your username (Without space) : ");
+	scanf("%s", &usn); getchar();
+	
+	printf("Enter your password : ");
+	scanf("%s", &password); getchar();
+	
+	while(fscanf(file, "%49[^,],%49[^\n]\n", fileUsn, filePassword) == 2){
+		if (strcmp(usn, fileUsn) == 0 && strcmp(password, filePassword) == 0) {
+            fclose(file);
+            printf("Login successful! Welcome back, %s.\n", usn);
+            Sleep(2000);
+            return 1; // Login successful
+        }
+	}
+	
+	fclose(file);
+    return 0; // Login failed
 }
 
 // Mining menu
