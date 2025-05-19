@@ -1,6 +1,4 @@
-# aol-lab
-
-## Terminal based RPG game written in C
+# Terminal based RPG game written in C
 Basically a game where you do RPG activity stuff from cutting wood, fishing, mining, battling, crafting etc
 
 ## Features : 
